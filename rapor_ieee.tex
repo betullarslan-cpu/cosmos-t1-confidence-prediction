@@ -244,7 +244,8 @@ Dengeli bir veri kümesi oluşturmak için her sınıftan 500 eğitim ve 50 test
 
 Şekil~\ref{fig:confusion}'de görüldüğü üzere Random Forest en düşük
 yanlış pozitif (FP=16) ile yanlış sınıfları en iyi ayırt ederken,
-Logistic Regression en düşük FP (FP=19) ile ikinci sıradadır.
+Gradient Boosting FP=18 ile ikinci, Logistic Regression ise FP=19
+ile üçüncü sıradadır.
 Gradient Boosting en yüksek FN (FN=14) değeriyle doğru cevapları
 kaçırma açısından en zayıf kalmıştır.
 
@@ -253,7 +254,7 @@ kaçırma açısından en zayıf kalmıştır.
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.9\linewidth]{fig_roc.png}
-  \caption{Final ROC eğrileri: LR (AUC=0.708), RF (AUC=0.782), GB (AUC=0.794).}
+  \caption{Final ROC eğrileri: LR (AUC=0.708), RF (AUC=0.782), GB (AUC=0.7936).}
   \label{fig:roc}
 \end{figure}
 
@@ -311,7 +312,7 @@ anlamlı tahmin yapılabilirliği sağladığını ortaya koymaktadır.
 % ══════════════════════════════════════════════════════════
 \section{Tartışma}
 
-\subsection{Neden Random Forest En İyi?}
+\subsection{Model Seçimi: F1 ve AUC Açısından}
 
 Özellikler ile etiket arasındaki ilişki doğrusal değildir. Logistic Regression
 bu nedenle daha düşük başarım sergilemektedir (Acc=0.69, F1=0.710). Random
