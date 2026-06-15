@@ -31,7 +31,7 @@ En belirleyici özellik `mean_first10` çıktı — ilk 10 tokenin ortalama güv
 
 ## Çalıştırmak için
 
-Google Colab'da L4 GPU gerekiyor (model ~18.5 GB VRAM kullanıyor).
+Google Colab'da A100 GPU gerekiyor (model ~18.5 GB VRAM kullanıyor).
 
 ```bash
 pip install transformers torch datasets scikit-learn pandas numpy matplotlib seaborn
