@@ -157,7 +157,7 @@ Tablo~\ref{tab:params}'de üretim konfigürasyonu özetlenmektedir.
 % ══════════════════════════════════════════════════════════
 \section{Üretim Süreci ve Gözlemler}
 
-1776 soru üzerinde üretim yapılmış; model doğruluğu \%30.8 olarak
+1776 soru üzerinde üretim yapılmış; model doğruluğu \%31.0 olarak
 gözlemlenmiştir (Tablo~\ref{tab:gen}).
 
 \begin{table}[H]
@@ -169,8 +169,8 @@ gözlemlenmiştir (Tablo~\ref{tab:gen}).
                           & \textbf{Sayı} & \textbf{Oran} \\
     \midrule
     Toplam soru           & 1776          & \%100  \\
-    Model doğru           & 551           & \%30.8 \\
-    Model yanlış          & 1225          & \%69.2 \\
+    Model doğru           & 551           & \%31.0 \\
+    Model yanlış          & 1225          & \%69.0 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -186,13 +186,13 @@ Dengeli bir veri kümesi oluşturmak için her sınıftan 500 eğitim ve 50 test
   \centering
   \caption{Dengeli Veri Kümesi}
   \label{tab:split}
-  \begin{tabular}{lrr}
+  \begin{tabular}{lrrr}
     \toprule
-    \textbf{Küme}   & \textbf{Doğru} & \textbf{Yanlış} \\
+    \textbf{Küme}   & \textbf{Doğru} & \textbf{Yanlış} & \textbf{Toplam} \\
     \midrule
-    Eğitim          & 500            & 500 \\
-    Test            & 50             & 50  \\
-    \textbf{Toplam} & \textbf{550}   & \textbf{550} \\
+    Eğitim          & 500            & 500             & 1000 \\
+    Test            & 50             & 50              & 100  \\
+    \textbf{Toplam} & \textbf{550}   & \textbf{550}    & \textbf{1100} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -326,7 +326,7 @@ Gradient Boosting ise AUC metriğinde (0.794) öne çıkmaktadır.
         güç için sınırlıdır; en az 200 örnek önerilmektedir.
   \item \textbf{MAX\_NEW\_TOKENS kısıtı:} \texttt{<think>} tabanlı model
         için 128 token yetersizdir; idealinde en az 2048 token kullanılmalıdır.
-  \item \textbf{Sınıf dengesizliği:} Gerçek dağılımda \%69.2 yanlış
+  \item \textbf{Sınıf dengesizliği:} Gerçek dağılımda \%69.0 yanlış
         mevcuttur; gerçek dünya uygulaması bu dengesizliği hesaba katmalıdır.
 \end{enumerate}
 
