@@ -52,10 +52,10 @@
 Bu çalışmada, Cosmos-T1 (\texttt{ytu-ce-cosmos/Turkish-Gemma-9b-T1}) modelinin
 Türkçe matematik sorularına verdiği cevapların doğruluğu, üretim sürecindeki
 top1--top2 token olasılık farklarından çıkarılan istatistiksel özellikler
-kullanılarak tahmin edilmektedir. 1200 soru üretilmiş; her cevap için 18 özellik
+kullanılarak tahmin edilmektedir. 1776 soru üretilmiş; her cevap için 18 özellik
 hesaplanmış ve üç makine öğrenmesi sınıflandırıcısı (Logistic Regression, Random
-Forest, Gradient Boosting) test edilmiştir. En iyi model olan Random Forest,
-$n=100$ test setinde \textbf{F1=0.7679} ve \textbf{AUC=0.8032} başarımı
+Forest, Gradient Boosting) test edilmiştir. Random Forest $n=100$ test setinde
+\textbf{F1=0.7429}, Gradient Boosting ise \textbf{AUC=0.7936} başarımı
 sağlamıştır. Sonuçlar, modelin kendi üretim sürecinden elde edilebilen ``iç sinyal''
 tabanlı bir cevap kalite göstergesinin mümkün olduğunu ortaya koymaktadır.
 \end{abstract}
@@ -147,7 +147,7 @@ Tablo~\ref{tab:params}'de üretim konfigürasyonu özetlenmektedir.
     \midrule
     \texttt{MAX\_NEW\_TOKENS} & 128 \\
     \texttt{BATCH\_SIZE}      & 8 \\
-    \texttt{N\_RUN}           & 1200 \\
+    \texttt{N\_RUN}           & 1776 \\
     Donanım                  & L4 22.5 GB, bfloat16 \\
     Ortalama süre            & $\approx$18.5 soru/dk \\
     \bottomrule
@@ -157,7 +157,7 @@ Tablo~\ref{tab:params}'de üretim konfigürasyonu özetlenmektedir.
 % ══════════════════════════════════════════════════════════
 \section{Üretim Süreci ve Gözlemler}
 
-1200 soru üzerinde üretim yapılmış; model doğruluğu \%30.8 olarak
+1776 soru üzerinde üretim yapılmış; model doğruluğu \%30.8 olarak
 gözlemlenmiştir (Tablo~\ref{tab:gen}).
 
 \begin{table}[H]
@@ -168,9 +168,9 @@ gözlemlenmiştir (Tablo~\ref{tab:gen}).
     \toprule
                           & \textbf{Sayı} & \textbf{Oran} \\
     \midrule
-    Toplam soru           & 1200          & \%100  \\
-    Model doğru           & 370           & \%30.8 \\
-    Model yanlış          & 830           & \%69.2 \\
+    Toplam soru           & 1776          & \%100  \\
+    Model doğru           & 551           & \%30.8 \\
+    Model yanlış          & 1225          & \%69.2 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -179,7 +179,7 @@ Düşük doğruluk oranı, modelin \texttt{<think>} etiketiyle uzun CoT üretmes
 ve \texttt{MAX\_NEW\_TOKENS=128} kısıtı nedeniyle nihai \texttt{\#\#\#\# <sayı>}
 yanıtına ulaşılamamasından kaynaklanmaktadır.
 
-Dengeli bir veri kümesi oluşturmak için her sınıftan 320 eğitim ve 50 test
+Dengeli bir veri kümesi oluşturmak için her sınıftan 500 eğitim ve 50 test
 örneği seçilmiştir (Tablo~\ref{tab:split}).
 
 \begin{table}[H]
@@ -190,9 +190,9 @@ Dengeli bir veri kümesi oluşturmak için her sınıftan 320 eğitim ve 50 test
     \toprule
     \textbf{Küme}   & \textbf{Doğru} & \textbf{Yanlış} \\
     \midrule
-    Eğitim          & 320            & 320 \\
+    Eğitim          & 500            & 500 \\
     Test            & 50             & 50  \\
-    \textbf{Toplam} & \textbf{370}   & \textbf{370} \\
+    \textbf{Toplam} & \textbf{550}   & \textbf{550} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -214,15 +214,15 @@ Dengeli bir veri kümesi oluşturmak için her sınıftan 320 eğitim ve 50 test
 
 \begin{table}[H]
   \centering
-  \caption{ML Model Karşılaştırması ($n_\text{train}=640$, $n_\text{test}=100$)}
+  \caption{ML Model Karşılaştırması ($n_\text{train}=1000$, $n_\text{test}=100$)}
   \label{tab:results}
   \begin{tabular}{lccccc}
     \toprule
     \textbf{Model} & \textbf{Acc} & \textbf{Prec} & \textbf{Rec} & \textbf{F1} & \textbf{AUC} \\
     \midrule
-    LR  & 0.670 & 0.639 & 0.780 & 0.703 & 0.756 \\
-    \textbf{RF}  & \textbf{0.740} & \textbf{0.694} & \textbf{0.860} & \textbf{0.768} & \textbf{0.803} \\
-    GB  & 0.730 & 0.695 & 0.820 & 0.752 & 0.792 \\
+    LR  & 0.690 & 0.667 & 0.760 & 0.710 & 0.708 \\
+    \textbf{RF}  & \textbf{0.730} & \textbf{0.709} & \textbf{0.780} & \textbf{0.743} & 0.782 \\
+    GB  & 0.680 & 0.667 & 0.720 & 0.692 & \textbf{0.794} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -236,28 +236,31 @@ Dengeli bir veri kümesi oluşturmak için her sınıftan 320 eğitim ve 50 test
   \centering
   \includegraphics[width=\linewidth]{fig_confusion.png}
   \caption{Üç modele ait confusion matrix'ler (100 test örneği).
-           LR: 28TN/22FP/11FN/39TP.
-           RF: 31TN/19FP/7FN/43TP.
-           GB: 32TN/18FP/9FN/41TP.}
+           LR: 31TN/19FP/12FN/38TP.
+           RF: 34TN/16FP/11FN/39TP.
+           GB: 32TN/18FP/14FN/36TP.}
   \label{fig:confusion}
 \end{figure}
 
 Şekil~\ref{fig:confusion}'de görüldüğü üzere Random Forest en düşük
-yanlış negatif (FN=7) değerine sahipken, Gradient Boosting en düşük
-yanlış pozitif (FP=18) değerini vermektedir.
+yanlış pozitif (FP=16) ile yanlış sınıfları en iyi ayırt ederken,
+Logistic Regression en düşük FP (FP=19) ile ikinci sıradadır.
+Gradient Boosting en yüksek FN (FN=14) değeriyle doğru cevapları
+kaçırma açısından en zayıf kalmıştır.
 
 \subsection{ROC Eğrisi}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.9\linewidth]{fig_roc.png}
-  \caption{ROC eğrileri: LR (AUC=0.756), RF (AUC=0.803), GB (AUC=0.792).}
+  \caption{Final ROC eğrileri: LR (AUC=0.708), RF (AUC=0.782), GB (AUC=0.794).}
   \label{fig:roc}
 \end{figure}
 
-Şekil~\ref{fig:roc}, tüm modellerin AUC$>$0.5 olduğunu göstermektedir;
+Şekil~\ref{fig:roc}, tüm modellerin AUC$>$0.7 olduğunu göstermektedir;
 bu durum top1--top2 fark sinyalinin rastgele tahminden anlamlı biçimde
-daha iyi olduğunu kanıtlamaktadır.
+daha iyi olduğunu kanıtlamaktadır. GB en yüksek AUC (0.794) ile
+eşik bağımsız ayırt etmede öne çıkmaktadır.
 
 \subsection{Feature Importance}
 
@@ -270,17 +273,17 @@ daha iyi olduğunu kanıtlamaktadır.
 
 \begin{table}[H]
   \centering
-  \caption{En Önemli 5 Özellik (RF, $n_\text{train}=640$)}
+  \caption{En Önemli 5 Özellik (GB, $n_\text{train}=1000$)}
   \label{tab:feat}
   \begin{tabular}{clr}
     \toprule
     \textbf{Sıra} & \textbf{Özellik}        & \textbf{Önem} \\
     \midrule
-    1 & \texttt{mean\_first10}      & 0.147 \\
-    2 & \texttt{mean\_last10}       & 0.107 \\
-    3 & \texttt{q75}                & 0.095 \\
-    4 & \texttt{median}             & 0.086 \\
-    5 & \texttt{min\_region\_mean}  & 0.082 \\
+    1 & \texttt{mean\_first10}      & 0.187 \\
+    2 & \texttt{q75}                & 0.100 \\
+    3 & \texttt{mean\_last10}       & 0.085 \\
+    4 & \texttt{min\_region\_mean}  & 0.078 \\
+    5 & \texttt{trend}              & 0.076 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -302,7 +305,7 @@ göstermektedir.
 Şekil~\ref{fig:dist}, doğru cevaplar için ortalama farkın yanlış cevaplara
 kıyasla hafifçe daha yüksek olduğunu göstermektedir; ancak iki dağılım
 örtüşmektedir. Bu, tek eşik ile mükemmel ayrım yapılamayacağını, ancak
-birleşik özelliklerin topluluk yöntemleriyle (F1=0.7679, AUC=0.8032)
+birleşik özelliklerin topluluk yöntemleriyle (RF F1=0.7429, GB AUC=0.7936)
 anlamlı tahmin yapılabilirliği sağladığını ortaya koymaktadır.
 
 % ══════════════════════════════════════════════════════════
@@ -311,9 +314,10 @@ anlamlı tahmin yapılabilirliği sağladığını ortaya koymaktadır.
 \subsection{Neden Random Forest En İyi?}
 
 Özellikler ile etiket arasındaki ilişki doğrusal değildir. Logistic Regression
-bu nedenle daha düşük başarım sergilemektedir (Acc=0.67, F1=0.7027). Random
+bu nedenle daha düşük başarım sergilemektedir (Acc=0.69, F1=0.710). Random
 Forest, özellik uzayındaki karmaşık etkileşimleri doğrusal olmayan karar
-sınırlarıyla yakalayabilmektedir.
+sınırlarıyla yakalayabilmekte ve F1 metriğinde lider (0.743) olmaktadır.
+Gradient Boosting ise AUC metriğinde (0.794) öne çıkmaktadır.
 
 \subsection{Sınırlılıklar}
 
@@ -334,13 +338,13 @@ olasılık farklarından istatistiksel özellikler çıkararak cevap doğruluğu
 makine öğrenmesi ile tahmin edilebildiğini göstermiştir.
 
 \begin{itemize}
-  \item 1200 soruluk üretimden 18 özellikli vektörler oluşturulmuş,
-        dengeli eğitim ($n=640$) ve test ($n=100$) kümeleri elde edilmiştir.
-  \item Random Forest \textbf{Acc=0.74, F1=0.7679, AUC=0.8032} ile
-        en başarılı model olmuştur.
-  \item \texttt{mean\_first10} ve \texttt{mean\_last10} özelliklerinin
-        tahminleyici güce en fazla katkıyı sağladığı belirlenmiştir.
-  \item Tüm modeller AUC$>$0.5 elde etmiştir; bu sinyal anlamlıdır.
+  \item 1776 soruluk üretimden 18 özellikli vektörler oluşturulmuş,
+        dengeli eğitim ($n=1000$) ve test ($n=100$) kümeleri elde edilmiştir.
+  \item Random Forest \textbf{Acc=0.73, F1=0.7429} ile en yüksek F1,
+        Gradient Boosting \textbf{AUC=0.7936} ile en yüksek AUC sağlamıştır.
+  \item \texttt{mean\_first10} her iki modelde açık ara birinci özellik
+        olmuştur (GB önem: 0.187).
+  \item Tüm modeller AUC$>$0.7 elde etmiştir; sinyal anlamlı ve tutarlıdır.
 \end{itemize}
 
 Sonuç olarak, top1--top2 farkı ek dış bilgi gerektirmeksizin modelin
